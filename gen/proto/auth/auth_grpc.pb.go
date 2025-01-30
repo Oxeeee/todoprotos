@@ -30,7 +30,7 @@ const (
 type AuthClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
-	UpdateTokens(ctx context.Context, in *UpdateTokensRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	UpdateTokens(ctx context.Context, in *UpdateTokensRequest, opts ...grpc.CallOption) (*UpdateTokensResponse, error)
 }
 
 type authClient struct {
@@ -61,9 +61,9 @@ func (c *authClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.C
 	return out, nil
 }
 
-func (c *authClient) UpdateTokens(ctx context.Context, in *UpdateTokensRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+func (c *authClient) UpdateTokens(ctx context.Context, in *UpdateTokensRequest, opts ...grpc.CallOption) (*UpdateTokensResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(LoginResponse)
+	out := new(UpdateTokensResponse)
 	err := c.cc.Invoke(ctx, Auth_UpdateTokens_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (c *authClient) UpdateTokens(ctx context.Context, in *UpdateTokensRequest, 
 type AuthServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
-	UpdateTokens(context.Context, *UpdateTokensRequest) (*LoginResponse, error)
+	UpdateTokens(context.Context, *UpdateTokensRequest) (*UpdateTokensResponse, error)
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -94,7 +94,7 @@ func (UnimplementedAuthServer) Register(context.Context, *RegisterRequest) (*Reg
 func (UnimplementedAuthServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedAuthServer) UpdateTokens(context.Context, *UpdateTokensRequest) (*LoginResponse, error) {
+func (UnimplementedAuthServer) UpdateTokens(context.Context, *UpdateTokensRequest) (*UpdateTokensResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateTokens not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}

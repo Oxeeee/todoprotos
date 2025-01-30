@@ -7,7 +7,7 @@ option go_package = "oxeeee.auth.v1;authv1";
 service Auth {
   rpc Register(RegisterRequest) returns (RegisterResponse);
   rpc Login(LoginRequest) returns (LoginResponse);
-  rpc UpdateTokens(UpdateTokensRequest) returns (LoginResponse);
+  rpc UpdateTokens(UpdateTokensRequest) returns (UpdateTokensResponse);
 }
 
 message RegisterRequest {
@@ -32,4 +32,9 @@ message LoginResponse {
 
 message UpdateTokensRequest {
   string refresh_token = 1;
+}
+
+message UpdateTokensResponse {
+    string refresh_token = 1;
+    string access_token = 2;
 }
